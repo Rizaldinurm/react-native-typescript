@@ -8,3 +8,7 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
+
+export function WithPayloadType<T>() {
+  return (t: T) => ({payload: t});
+}

@@ -1,14 +1,13 @@
 import {createAction, createReducer, PayloadAction} from '@reduxjs/toolkit';
 import update from 'immutability-helper';
 import {AppState, SetApp} from './type.d';
-
-function withPayloadType<T>() {
-  return (t: T) => ({payload: t});
-}
+import {WithPayloadType, AppThunk} from '../../utils/redux';
+import {AppDispatch} from '../store';
+import {RootState} from '../root';
 
 export const setInitial = createAction(
   'SET_INITIAL',
-  withPayloadType<SetApp>(),
+  WithPayloadType<SetApp>(),
 );
 
 const initialState: AppState = {
@@ -25,3 +24,19 @@ const appReducer = createReducer(initialState, {
   },
 });
 export default appReducer;
+
+// Thunk
+export const getDataUser = (): AppThunk => (
+  // AppDispatch is type of dispatch built in store.ts; You can dispatch where ever you want
+  dispatch: AppDispatch,
+  getState: () => RootState,
+) => {
+  const data: SetApp = {
+    token: 'helloworld',
+    session: 'munchen',
+  };
+  const a = getState();
+  // there will be state redux
+  console.log(a.app);
+  dispatch(setInitial(data));
+};
